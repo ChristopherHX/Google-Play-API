@@ -79,7 +79,13 @@ struct device_info {
                                                                "com.google.android.gms", "javax.obex",
                                                                "org.apache.http.legacy"};
     std::vector<std::pair<std::string, int>> config_system_features; // this will be initialized in the constructor
-    std::vector<std::string> config_native_platforms = {"x86", "armeabi-x7a", "armeabi"};
+    std::vector<std::string> config_native_platforms = {
+#ifdef __arm__
+        "armeabi-v7a"
+#else
+        "x86", "armeabi-x7a", "armeabi"
+#endif
+    };
     int config_screen_width = 1920;
     int config_screen_height = 1080;
     std::vector<std::string> config_system_supported_locales = {"en", "en-US"};
