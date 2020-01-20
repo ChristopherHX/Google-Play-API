@@ -297,7 +297,7 @@ void device_info::generate_fields() {
         if (generated_mac_addr.length() <= 0) {
             unsigned char bin_addr[6];
             for (int i = 0; i < 6; i++)
-                bin_addr[i] = rand::next_int<unsigned char>((unsigned char) 0, UCHAR_MAX);
+                bin_addr[i] = (unsigned char)rand::next_int<unsigned short>((unsigned char) 0, UCHAR_MAX);
             bin_addr[0] &= 0xfe;
             bin_addr[0] |= 0x02;
             std::stringstream ss;

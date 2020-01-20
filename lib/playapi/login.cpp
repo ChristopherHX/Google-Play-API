@@ -1,5 +1,12 @@
 #include <iostream>
+#ifdef _WIN32
+#include <winsock2.h>
+#include <windows.h>
+#include <direct.h>
+#undef small
+#else
 #include <pwd.h>
+#endif
 #include <cstring>
 #include <playapi/login.h>
 #include <playapi/util/http.h>
