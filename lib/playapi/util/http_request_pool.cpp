@@ -68,7 +68,8 @@ void http_request_pool::handle_socket_action(curl_socket_t socket, int flags) {
             curl_easy_getinfo(m->easy_handle, CURLINFO_PRIVATE, &entry);
             entry->done(m->easy_handle, m->data.result);
             delete entry;
-            curl_easy_setopt(m->easy_handle, CURLOPT_PRIVATE, NULL);
+            // This line crashes on startup time to time, linux and windows
+            // curl_easy_setopt(m->easy_handle, CURLOPT_PRIVATE, NULL);
         }
     }
 }
