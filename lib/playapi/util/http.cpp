@@ -115,6 +115,7 @@ CURL* http_request::build(std::stringstream& output, bool copy_body) {
     assert(curl != nullptr);
     assert(url.length() > 0);
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
     switch (method) {
         case http_method::GET:
             curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
