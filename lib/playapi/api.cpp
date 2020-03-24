@@ -80,8 +80,6 @@ void api::add_headers(http_request& req, const request_options& options) {
         req.add_header("X-DFE-Device-Checkin-Consistency-Token", checkin_data.device_data_version_info);
     if (options.include_device_config_token && !device_config_token.empty())
         req.add_header("X-DFE-Device-Config-Token", device_config_token);
-    if (options.include_toc_cookie && !toc_cookie.empty())
-        req.add_header("X-DFE-Cookie", toc_cookie);
     experiments.add_headers(req);
 }
 
@@ -129,13 +127,6 @@ api::request_task api::send_request(http_method method, const std::string& path,
 
 api::request_task api::fetch_user_settings() {
     return send_request(http_method::GET, "userSettings", request_options());
-}
-
-api::request_task api::fetch_toc() {
-    request_options opt;
-    opt.include_device_config_token = true;
-    opt.include_toc_cookie = true;
-    return send_request(http_method::GET, "toc", opt);
 }
 
 api::request_task api::upload_device_config(const std::string& gcm_reg_id, bool upload_full_config) {

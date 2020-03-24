@@ -59,13 +59,11 @@ void device_config::set_device_info_data(const playapi::device_info& dev) {
 void device_config::load_api_data(const std::string& email, playapi::api& api) {
     std::string p = "api." + email + ".";
     api.device_config_token = config.get(p + "device_config_token", api.device_config_token);
-    api.toc_cookie = config.get(p + "toc_cookie", api.toc_cookie);
     api.experiments.set_targets(config.get(p + "experiments"));
 }
 
 void device_config::set_api_data(const std::string& email, const playapi::api& api) {
     std::string p = "api." + email + ".";
     config.set(p + "device_config_token", api.device_config_token);
-    config.set(p + "toc_cookie", api.toc_cookie);
     config.set(p + "experiments", api.experiments.get_comma_separated_target_list());
 }

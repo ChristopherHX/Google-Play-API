@@ -232,46 +232,6 @@ void playapi_cli_base::perform_auth() {
     api.set_auth(login_api)->call();
     api.set_checkin_data(dev_state.checkin_data);
     dev_state.load_api_data(login_api.get_email(), api);
-    if (api.toc_cookie.length() == 0 || api.device_config_token.length() == 0) {
-        api.fetch_user_settings()->call();
-        auto toc = api.fetch_toc()->call();
-        if (toc.payload().tocresponse().has_cookie())
-            api.toc_cookie = toc.payload().tocresponse().cookie();
-
-        if (api.fetch_toc()->call().payload().tocresponse().requiresuploaddeviceconfig()) {
-            auto resp = api.upload_device_config()->call();
-            api.device_config_token = resp.payload().uploaddeviceconfigresponse().uploaddeviceconfigtoken();
-
-            toc = api.fetch_toc()->call();
-            assert(!toc.payload().tocresponse().requiresuploaddeviceconfig() &&
-                   toc.payload().tocresponse().has_cookie());
-            api.toc_cookie = toc.payload().tocresponse().cookie();
-            if (toc.payload().tocresponse().has_toscontent() && toc.payload().tocresponse().has_tostoken()) {
-                if (opt_interactive)
-                    std::cout << "Terms of Service:" << std::endl
-                              << toc.payload().tocresponse().toscontent() << " [y/N]: ";
-                bool allow_marketing_emails = false;
-                if (!opt_accept_tos) {
-                    std::string str;
-                    if (!opt_interactive) {
-                        std::cerr << "error: tos not accepted" << std::endl;
-                        exit(1);
-                    }
-                    std::getline(std::cin, str);
-                    if (str[0] != 'Y' && str[0] != 'y') {
-                        std::cout << "You have to accept the Terms of Service!" << std::endl;
-                        exit(1);
-                    }
-                    std::cout << "Optional: " << toc.payload().tocresponse().toscheckboxtextmarketingemails()
-                              << " [y/N]: ";
-                    std::getline(std::cin, str);
-                    allow_marketing_emails = (str[0] == 'Y' || str[0] == 'y');
-                }
-                auto tos = api.accept_tos(toc.payload().tocresponse().tostoken(), allow_marketing_emails)->call();
-                assert(tos.payload().has_accepttosresponse());
-                dev_state.set_api_data(login_api.get_email(), api);
-                dev_state.save();
-            }
-        }
-    }
+    dev_state.set_api_data(login_api.get_email(), api);
+    dev_state.save();
 }

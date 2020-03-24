@@ -25,7 +25,6 @@ public:
         bool include_checkin_consistency_token = true;
         bool include_content_filters = true;
         bool include_network_type = true;
-        bool include_toc_cookie = true;
         bool include_device_config_token = false;
     };
 
@@ -51,7 +50,6 @@ public:
 
     mutable std::mutex info_mutex;
     std::string device_config_token;
-    std::string toc_cookie;
     experiments_list experiments;
 
 
@@ -75,8 +73,6 @@ public:
 
     request_task fetch_user_settings();
 
-    request_task fetch_toc();
-
     request_task upload_device_config(const std::string& gcm_reg_id = "", bool upload_full_config = true);
 
     request_task accept_tos(const std::string& token, bool allow_marketing_emails = false);
@@ -99,11 +95,6 @@ public:
     void set_device_config_token(std::string value) {
         std::lock_guard<std::mutex> l (info_mutex);
         device_config_token = std::move(value);
-    }
-
-    void set_toc_cookie(std::string value) {
-        std::lock_guard<std::mutex> l (info_mutex);
-        toc_cookie = std::move(value);
     }
 
     struct bulk_details_request {
