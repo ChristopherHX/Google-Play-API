@@ -82,7 +82,7 @@ struct device_info {
                                                                "org.apache.http.legacy"};
     std::vector<std::pair<std::string, int>> config_system_features; // this will be initialized in the constructor
     std::vector<std::string> config_native_platforms = {
-#ifdef __arm__
+#if defined(__arm__) && (!defined(FORCE_ARM) || FORCE_ARM == 1 )
         "armeabi-v7a"
 #else
         "x86", "armeabi-x7a", "armeabi"
