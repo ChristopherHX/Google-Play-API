@@ -85,7 +85,7 @@ struct device_info {
 #if defined(__arm__) && (!defined(FORCE_ARM) || FORCE_ARM == 1 )
         "armeabi-v7a"
 #else
-        "x86", "armeabi-x7a", "armeabi"
+        "x86_64", "x86"
 #endif
     };
     int config_screen_width = 1920;
